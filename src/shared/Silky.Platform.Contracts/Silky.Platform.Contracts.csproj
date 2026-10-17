@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Silky.Platform.Core\Silky.Platform.Core.csproj" />
+  </ItemGroup>
+
+</Project>

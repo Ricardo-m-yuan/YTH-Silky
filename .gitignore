@@ -1,0 +1,22 @@
+# .NET 构建产物
+**/bin/
+**/obj/
+**/artifacts/
+
+# IDE
+.vs/
+.idea/
+*.user
+*.suo
+
+# 日志
+**/logs/
+*.log
+
+# 配置覆盖（本地开发环境）
+appsettings.Local.yaml
+appsettings.Development.yaml
+
+# OS
+Thumbs.db
+.DS_Store

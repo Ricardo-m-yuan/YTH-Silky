@@ -1,0 +1,67 @@
+# API 管理平台网关
+# 注意：gateway.jwtSecret 必须与 Identity 服务的 jwtSettings.secret 完全一致
+
+serilog:
+  minimumLevel:
+    default: Information
+    override:
+      Microsoft: Warning
+      Microsoft.AspNetCore: Warning
+      Microsoft.Hosting.Lifetime: Information
+      Silky: Information
+      Silky.Http.Identity: Warning
+  writeTo:
+    - name: Console
+      args:
+        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"
+    - name: File
+      args:
+        path: "./logs/gateway-.log"
+        rollingInterval: Day
+
+rpc:
+  host: 0.0.0.0
+  token: ypjdYOzNd4FwENJiEARMLWwK0v7QUHPW
+  transportClientPoolNumber: 50
+  useTransportClientPool: true
+
+registrycenter:
+  type: Consul
+  address: http://127.0.0.1:8500
+  registerSwaggerDoc: true
+  healthCheck: true
+  healthCheckIntervalSecond: 10
+
+distributedCache:
+  redis:
+    isEnabled: true
+    configuration: 127.0.0.1:6379,defaultDatabase=0
+
+gateway:
+  jwtSecret: 6d9a1f4c8b2e7a3d5c0f8e6b4a2d1c9e
+
+swaggerDocument:
+  organizationMode: AllAndGroup
+  injectMiniProfiler: true
+  showDashboardService: false
+  termsOfService: https://github.com/liuhll/silky
+  loginInfo:
+    enabled: true
+    checkUrl: /api/account/checkurl
+    submitUrl: /api/account/submiturl
+    useTenantName: false
+
+dashboard:
+  useAuth: true
+  externalLinks:
+    - title: "message.swagger"
+      path: "/swagger"
+      icon: "iconfont icon-swagger"
+    - title: "Github"
+      path: "https://github.com/liuhll/silky"
+
+governance:
+  timeoutMillSeconds: 5000
+  maxConcurrentHandlingCount: 100
+  enableCircuitBreaker: true
+  apiIsRESTfulStyle: true

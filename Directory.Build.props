@@ -1,0 +1,23 @@
+<Project>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591;CS8632</NoWarn>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <!-- 版本集中管理：所有包版本在此处定义，各项目通过 $(XxxVersion) 引用 -->
+  <PropertyGroup>
+    <SilkyVersion>3.9.2</SilkyVersion>
+    <EfCoreVersion>8.0.32</EfCoreVersion>
+    <QuartzVersion>3.22.6</QuartzVersion>
+    <MassTransitVersion>8.5.11</MassTransitVersion>
+    <SerilogVersion>8.0.3</SerilogVersion>
+    <WindowsServicesVersion>8.0.1</WindowsServicesVersion>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Silky.Rpc" Version="$(SilkyVersion)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="$(EfCoreVersion)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(EfCoreVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\shared\Silky.Platform.Core\Silky.Platform.Core.csproj" />
+    <ProjectReference Include="..\Silky.Platform.Api.Application.Contracts\Silky.Platform.Api.Application.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

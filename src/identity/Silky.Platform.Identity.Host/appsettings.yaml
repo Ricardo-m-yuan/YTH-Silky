@@ -1,0 +1,53 @@
+# 身份中心（用户/角色/权限）
+# 注意：jwtSettings.secret 必须与网关 gateway.jwtSecret 完全一致，否则网关验签失败
+
+serilog:
+  minimumLevel:
+    default: Information
+    override:
+      Microsoft: Warning
+      Microsoft.Hosting.Lifetime: Information
+      Silky: Information
+  writeTo:
+    - name: Console
+      args:
+        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"
+
+rpc:
+  host: 0.0.0.0
+  port: 2201
+  token: ypjdYOzNd4FwENJiEARMLWwK0v7QUHPW
+  transportClientPoolNumber: 50
+  useTransportClientPool: true
+
+registrycenter:
+  type: Consul
+  address: http://127.0.0.1:8500
+  registerSwaggerDoc: true
+  healthCheck: true
+  healthCheckIntervalSecond: 10
+
+distributedCache:
+  redis:
+    isEnabled: true
+    configuration: 127.0.0.1:6379,defaultDatabase=0
+
+connectionStrings:
+  default: "Server=.;Database=Platform_Identity;User Id=sa;Password=YourPassword123;TrustServerCertificate=True;MultipleActiveResultSets=True;"
+
+jwtSettings:
+  secret: 6d9a1f4c8b2e7a3d5c0f8e6b4a2d1c9e
+  expiredTime: 24
+
+rabbitMq:
+  host: 127.0.0.1
+  port: 5672
+  userName: guest
+  password: guest
+  virtualHost: /
+
+governance:
+  timeoutMillSeconds: 5000
+  maxConcurrentHandlingCount: 100
+  enableCircuitBreaker: true
+  apiIsRESTfulStyle: true

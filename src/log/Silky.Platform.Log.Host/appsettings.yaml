@@ -1,0 +1,48 @@
+# 日志服务（消费 RabbitMQ 事件落库）
+
+serilog:
+  minimumLevel:
+    default: Information
+    override:
+      Microsoft: Warning
+      Microsoft.Hosting.Lifetime: Information
+      Silky: Information
+  writeTo:
+    - name: Console
+      args:
+        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"
+
+rpc:
+  host: 0.0.0.0
+  port: 2204
+  token: ypjdYOzNd4FwENJiEARMLWwK0v7QUHPW
+  transportClientPoolNumber: 50
+  useTransportClientPool: true
+
+registrycenter:
+  type: Consul
+  address: http://127.0.0.1:8500
+  registerSwaggerDoc: true
+  healthCheck: true
+  healthCheckIntervalSecond: 10
+
+distributedCache:
+  redis:
+    isEnabled: true
+    configuration: 127.0.0.1:6379,defaultDatabase=0
+
+connectionStrings:
+  default: "Server=.;Database=Platform_Log;User Id=sa;Password=YourPassword123;TrustServerCertificate=True;MultipleActiveResultSets=True;"
+
+rabbitMq:
+  host: 127.0.0.1
+  port: 5672
+  userName: guest
+  password: guest
+  virtualHost: /
+
+governance:
+  timeoutMillSeconds: 5000
+  maxConcurrentHandlingCount: 100
+  enableCircuitBreaker: true
+  apiIsRESTfulStyle: true
