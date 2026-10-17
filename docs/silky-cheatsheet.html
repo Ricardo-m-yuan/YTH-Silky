@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silky 微服务框架 · 速查手册</title>
+<style>
+:root{
+  --bg:#f6f7f9; --panel:#ffffff; --border:#e3e6ea; --text:#1c2024; --muted:#6b7280;
+  --accent:#2f6feb; --accent-soft:#eaf1fe; --code-bg:#1e2430; --code-text:#e6edf3;
+  --green:#16a34a; --green-soft:#e8f6ec; --amber:#d97706; --amber-soft:#fdf3e3;
+  --red:#dc2626; --red-soft:#fdecec; --purple:#7c3aed; --purple-soft:#f1ebfd;
+  --shadow:0 1px 2px rgba(16,24,40,.05), 0 4px 12px rgba(16,24,40,.06);
+  --radius:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:var(--bg); color:var(--text); line-height:1.65; -webkit-font-smoothing:antialiased;
+}
+.layout{display:flex;max-width:1440px;margin:0 auto;gap:28px;padding:0 24px}
+/* 侧边导航 */
+.sidebar{
+  width:212px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;padding:28px 0;
+}
+.sidebar .brand{font-size:15px;font-weight:700;margin-bottom:4px;letter-spacing:-.2px}
+.sidebar .brand span{color:var(--accent)}
+.sidebar .ver{font-size:11.5px;color:var(--muted);margin-bottom:20px}
+.sidebar nav a{
+  display:block;padding:6.5px 11px;font-size:13px;color:var(--muted);text-decoration:none;
+  border-radius:7px;margin-bottom:1px;transition:all .15s;
+}
+.sidebar nav a:hover{background:var(--accent-soft);color:var(--accent)}
+.sidebar nav a.active{background:var(--accent);color:#fff;font-weight:600}
+main{flex:1;min-width:0;padding:28px 0 80px}
+/* Hero */
+.hero{
+  background:linear-gradient(135deg,#1e2a44 0%,#2f4a7d 55%,#3a5fa8 100%);
+  border-radius:16px;padding:38px 40px;color:#fff;margin-bottom:28px;
+  box-shadow:0 8px 28px rgba(30,42,68,.22);
+}
+.hero h1{font-size:29px;font-weight:700;letter-spacing:-.5px;margin-bottom:10px}
+.hero .sub{font-size:14.5px;opacity:.82;margin-bottom:22px;max-width:640px}
+.hero blockquote{
+  background:rgba(255,255,255,.13);border-left:3px solid #7fb5ff;border-radius:0 9px 9px 0;
+  padding:14px 18px;font-size:14.5px;backdrop-filter:blur(4px);
+}
+.hero blockquote b{color:#a8d0ff}
+.stats{display:flex;gap:30px;margin-top:24px;flex-wrap:wrap}
+.stats div{font-size:12.5px;opacity:.75}
+.stats b{display:block;font-size:21px;opacity:1;font-weight:700;letter-spacing:-.3px}
+section{margin-bottom:34px;scroll-margin-top:20px}
+h2{
+  font-size:19px;font-weight:700;margin-bottom:16px;letter-spacing:-.3px;
+  padding-bottom:9px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:9px;
+}
+h2 .n{
+  background:var(--accent);color:#fff;width:25px;height:25px;border-radius:7px;
+  display:inline-flex;align-items:center;justify-content:center;font-size:12.5px;flex-shrink:0;
+}
+h3{font-size:15px;font-weight:650;margin:20px 0 10px;letter-spacing:-.2px}
+p{font-size:14px;margin-bottom:11px;color:#374151}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+/* 表格 */
+table{width:100%;border-collapse:collapse;font-size:13.3px;background:var(--panel);
+  border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:var(--shadow)}
+th{background:#f2f4f7;text-align:left;padding:10px 14px;font-weight:650;font-size:12.5px;
+  color:#374151;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:10px 14px;border-bottom:1px solid #f0f2f5;vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:#fafbfc}
+td code,th code{font-size:12.3px}
+code{
+  font-family:"SF Mono",Menlo,Consolas,monospace;background:#eef1f5;
+  padding:1.5px 5px;border-radius:4px;font-size:12.6px;color:#1f4b99;
+}
+pre{
+  background:var(--code-bg);color:var(--code-text);padding:15px 17px;border-radius:10px;
+  overflow-x:auto;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:12.6px;line-height:1.68;margin:10px 0;
+}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+.k{color:#ff7b72}.s{color:#a5d6ff}.c{color:#8b949e;font-style:italic}
+.f{color:#d2a8ff}.t{color:#7ee787}.a{color:#79c0ff}
+/* 网格 */
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(245px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+/* 主机卡片 */
+.host{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px 17px;box-shadow:var(--shadow);transition:all .18s;position:relative;overflow:hidden}
+.host:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(16,24,40,.11);border-color:#c7d4ee}
+.host .tag{position:absolute;top:0;right:0;background:var(--accent-soft);color:var(--accent);
+  font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:0 0 0 9px}
+.host h4{font-size:14.5px;font-weight:650;margin-bottom:5px}
+.host .api{font-family:"SF Mono",Menlo,monospace;font-size:11.7px;color:#1f4b99;
+  background:#eef1f5;padding:5px 8px;border-radius:6px;margin-bottom:10px;display:block;word-break:break-all}
+.host ul{list-style:none;font-size:12.7px;color:var(--muted)}
+.host li{padding:2.5px 0;display:flex;justify-content:space-between;gap:8px}
+.host li b{color:var(--text);font-weight:600}
+.yes{color:var(--green);font-weight:700}.no{color:#c3c8cf}
+/* 徽章 */
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11.5px;font-weight:650;white-space:nowrap}
+.b-get{background:var(--green-soft);color:var(--green)}
+.b-post{background:var(--accent-soft);color:var(--accent)}
+.b-put{background:var(--amber-soft);color:var(--amber)}
+.b-del{background:var(--red-soft);color:var(--red)}
+.b-must{background:var(--red-soft);color:var(--red)}
+.b-tip{background:var(--purple-soft);color:var(--purple)}
+/* 路由推导器 */
+.derive{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+.derive .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:12px;margin-bottom:14px}
+label{display:block;font-size:12px;font-weight:650;color:var(--muted);margin-bottom:5px}
+input,select{
+  width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;
+  font-size:13px;font-family:inherit;background:#fff;color:var(--text);transition:border-color .15s;
+}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.out{background:#0f1520;border-radius:10px;padding:16px 18px;margin-top:4px}
+.out .line{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:14px;color:#e6edf3;
+  display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.out .line:last-child{margin-bottom:0}
+.out .lbl{font-size:11.5px;color:#7d8899;font-family:inherit;min-width:74px}
+.m{font-weight:700;padding:3px 10px;border-radius:6px;font-size:12.5px}
+.m-GET{background:#16a34a;color:#fff}.m-POST{background:#2f6feb;color:#fff}
+.m-PUT{background:#d97706;color:#fff}.m-DELETE{background:#dc2626;color:#fff}
+.path{color:#7ee787;font-weight:600}
+.steps{font-size:12.3px;color:#8b949e;border-top:1px solid #263041;padding-top:11px;line-height:1.85}
+.steps b{color:#a5d6ff;font-weight:600}
+.steps .arrow{color:#4d596b;margin:0 5px}
+/* 架构图 */
+.arch{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+  padding:22px;box-shadow:var(--shadow);overflow-x:auto}
+.arch svg{display:block;margin:0 auto;max-width:100%;height:auto}
+/* 流程 */
+.flow{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;margin:14px 0}
+.flow .step{flex:1;min-width:150px;background:var(--panel);border:1px solid var(--border);
+  padding:14px 15px;position:relative}
+.flow .step:first-child{border-radius:10px 0 0 10px}
+.flow .step:last-child{border-radius:0 10px 10px 0}
+.flow .step+.step{border-left:none}
+.flow .step h5{font-size:13px;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.flow .step p{font-size:12.2px;color:var(--muted);margin:0}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+/* Tabs */
+.tabs{display:flex;gap:5px;margin-bottom:14px;flex-wrap:wrap}
+.tab{padding:6.5px 14px;border:1px solid var(--border);background:var(--panel);border-radius:20px;
+  font-size:12.8px;cursor:pointer;font-weight:550;color:var(--muted);transition:all .15s;font-family:inherit}
+.tab:hover{border-color:var(--accent);color:var(--accent)}
+.tab.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.pane{display:none}.pane.on{display:block}
+/* 提示框 */
+.note{border-radius:10px;padding:13px 16px;font-size:13.2px;margin:12px 0;border-left:3px solid}
+.note.warn{background:var(--amber-soft);border-color:var(--amber);color:#7c4a03}
+.note.info{background:var(--accent-soft);border-color:var(--accent);color:#1a4aa8}
+.note b{font-weight:700}
+/* 时间线 */
+.tl{border-left:2px solid var(--border);padding-left:20px;margin-left:8px}
+.tl .item{position:relative;margin-bottom:18px}
+.tl .item:last-child{margin-bottom:0}
+.tl .item::before{content:"";position:absolute;left:-27px;top:5px;width:11px;height:11px;
+  border-radius:50%;background:var(--accent);border:2.5px solid #fff;box-shadow:0 0 0 2px var(--accent-soft)}
+.tl h4{font-size:14px;font-weight:650;margin-bottom:3px}
+.tl p{font-size:12.8px;color:var(--muted);margin:0}
+.tl code{font-size:12px}
+/* 特性速查 */
+.attr{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid #f0f2f5;align-items:baseline}
+.attr:last-child{border-bottom:none}
+.attr .nm{flex-shrink:0;width:265px;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:12.3px;color:#1f4b99}
+.attr .ds{font-size:12.7px;color:var(--muted)}
+@media(max-width:980px){
+  .layout{flex-direction:column;padding:0 16px;gap:0}
+  .sidebar{width:100%;height:auto;position:static;padding:18px 0;border-bottom:1px solid var(--border);
+    display:flex;align-items:center;gap:10px;overflow-x:auto}
+  .sidebar .brand,.sidebar .ver{margin:0;white-space:nowrap}
+  .sidebar nav{display:flex;gap:4px}
+  .sidebar nav a{margin:0;white-space:nowrap}
+  .attr{flex-direction:column;gap:3px}
+  .attr .nm{width:auto}
+  .flow .step{border-radius:10px!important;border-left:1px solid var(--border)!important;margin-bottom:8px}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="brand">Silky<span>.</span>速查手册</div>
+  <div class="ver">v3.x · .NET 6–10</div>
+  <nav>
+    <a href="#overview" class="active">框架概览</a>
+    <a href="#arch">整体架构</a>
+    <a href="#host">四种主机</a>
+    <a href="#route">路由推导</a>
+    <a href="#rpc">RPC 调用</a>
+    <a href="#gov">服务治理</a>
+    <a href="#tcc">TCC 事务</a>
+    <a href="#config">配置速查</a>
+    <a href="#attr">特性速查</a>
+    <a href="#pkg">包清单</a>
+    <a href="#learn">学习路径</a>
+    <a href="#pit">踩坑清单</a>
+  </nav>
+</aside>
+
+<main>
+<div class="hero">
+  <h1>Silky 微服务框架</h1>
+  <div class="sub">基于 .NET 平台的开源微服务开发框架，专注 RPC 通信与微服务治理两大核心能力。</div>
+  <blockquote>
+    核心理念：<b>接口即服务</b> —— 一个标注了 <code style="background:rgba(255,255,255,.18);color:#cfe4ff">[ServiceRoute]</code> 的普通 C# 接口，就是一个完整的微服务端点。自动生成 HTTP WebAPI 与 RPC 端点，无需手写 Controller。
+  </blockquote>
+  <div class="stats">
+    <div><b>DotNetty</b>TCP 长连接 RPC</div>
+    <div><b>3</b>种注册中心</div>
+    <div><b>4</b>种主机类型</div>
+    <div><b>TCC</b>内置分布式事务</div>
+  </div>
+</div>
+
+<!-- 概览 -->
+<section id="overview">
+<h2><span class="n">1</span>框架概览</h2>
+<div class="grid g3">
+  <div class="card">
+    <h3>它解决什么</h3>
+    <p style="font-size:13.3px">把普通 .NET 主机应用以<b>最小侵入</b>升级为微服务：自动获得服务注册发现、远程调用、负载均衡、熔断限流、分布式事务。</p>
+  </div>
+  <div class="card">
+    <h3>与同类框架的差异</h3>
+    <p style="font-size:13.3px">不需要 Sidecar 进程（对比 Dapr），不需要 Protobuf 代码生成（对比 gRPC），不引入新编程范式。会接口、DI、中间件就够。</p>
+  </div>
+  <div class="card">
+    <h3>最小上手代码</h3>
+    <pre style="margin:0;font-size:12px"><code><span class="f">await</span> Host.CreateDefaultBuilder(args)
+    .<span class="a">ConfigureSilkyGeneralHostDefaults</span>()
+    .Build().RunAsync();</code></pre>
+  </div>
+</div>
+
+<h3>横向对比</h3>
+<table>
+<thead><tr><th>特性</th><th>Silky</th><th>Dapr</th><th>MassTransit</th><th>gRPC</th></tr></thead>
+<tbody>
+<tr><td>开发语言</td><td><b>C# / .NET</b></td><td>多语言</td><td>C# / .NET</td><td>多语言</td></tr>
+<tr><td>RPC 方式</td><td><span class="badge b-get">接口代理·透明</span></td><td>HTTP/gRPC Sidecar</td><td>消息总线</td><td>Protobuf 代码生成</td></tr>
+<tr><td>服务治理</td><td>内置完整</td><td>内置（Sidecar）</td><td>部分需自行实现</td><td>不支持</td></tr>
+<tr><td>分布式事务</td><td>TCC 内置</td><td>Saga</td><td>Saga / Outbox</td><td>不支持</td></tr>
+<tr><td>部署复杂度</td><td><span class="badge b-get">低</span></td><td><span class="badge b-del">高（需 Runtime）</span></td><td>低</td><td>低</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- 架构 -->
+<section id="arch">
+<h2><span class="n">2</span>整体架构</h2>
+<div class="arch">
+<svg viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif">
+  <defs>
+    <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L7,3 z" fill="#6b7f9e"/>
+    </marker>
+  </defs>
+  <!-- 客户端 -->
+  <rect x="330" y="10" width="200" height="42" rx="9" fill="#eef2f8" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="430" y="36" text-anchor="middle" font-size="13" font-weight="600" fill="#334155">HTTP / WebSocket 客户端</text>
+  <line x1="430" y1="52" x2="430" y2="76" stroke="#6b7f9e" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="452" y="68" font-size="11" fill="#6b7280">HTTPS</text>
+
+  <!-- 网关 -->
+  <rect x="250" y="78" width="360" height="66" rx="10" fill="#2f6feb" stroke="#1e5ad1" stroke-width="1.5"/>
+  <text x="430" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Silky API 网关</text>
+  <text x="430" y="126" text-anchor="middle" font-size="11.5" fill="#cfe0ff">Swagger · JWT · 限流 · CORS · 审计 · Dashboard</text>
+  <line x1="430" y1="144" x2="430" y2="172" stroke="#6b7f9e" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="446" y="163" font-size="11" fill="#6b7280">DotNetty TCP RPC</text>
+
+  <!-- 服务 -->
+  <g>
+    <rect x="60" y="174" width="196" height="72" rx="10" fill="#fff" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="158" y="200" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1c2024">服务 A</text>
+    <text x="158" y="219" text-anchor="middle" font-size="11" fill="#6b7280">通用主机 · 仅 RPC</text>
+    <text x="158" y="235" text-anchor="middle" font-size="10.5" fill="#94a3b8">Host.CreateDefaultBuilder</text>
+  </g>
+  <g>
+    <rect x="332" y="174" width="196" height="72" rx="10" fill="#fff" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="430" y="200" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1c2024">服务 B</text>
+    <text x="430" y="219" text-anchor="middle" font-size="11" fill="#6b7280">Web 主机 · HTTP + RPC</text>
+    <text x="430" y="235" text-anchor="middle" font-size="10.5" fill="#94a3b8">ConfigureSilkyWebHost</text>
+  </g>
+  <g>
+    <rect x="604" y="174" width="196" height="72" rx="10" fill="#fff" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="702" y="200" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1c2024">服务 C</text>
+    <text x="702" y="219" text-anchor="middle" font-size="11" fill="#6b7280">WebSocket 主机</text>
+    <text x="702" y="235" text-anchor="middle" font-size="10.5" fill="#94a3b8">ConfigureSilkyWebSocket</text>
+  </g>
+  <!-- 服务间 RPC -->
+  <line x1="256" y1="210" x2="332" y2="210" stroke="#2f6feb" stroke-width="1.6" marker-end="url(#ar)" stroke-dasharray="4 3"/>
+  <line x1="528" y1="210" x2="604" y2="210" stroke="#2f6feb" stroke-width="1.6" marker-end="url(#ar)" stroke-dasharray="4 3"/>
+  <text x="294" y="203" text-anchor="middle" font-size="10.5" fill="#2f6feb" font-weight="600">RPC</text>
+  <text x="566" y="203" text-anchor="middle" font-size="10.5" fill="#2f6feb" font-weight="600">RPC</text>
+
+  <!-- 汇聚线 -->
+  <path d="M158 246 L158 272 L430 272" stroke="#6b7f9e" stroke-width="1.5" fill="none"/>
+  <path d="M430 246 L430 272" stroke="#6b7f9e" stroke-width="1.5" fill="none"/>
+  <path d="M702 246 L702 272 L430 272" stroke="#6b7f9e" stroke-width="1.5" fill="none"/>
+  <line x1="430" y1="272" x2="430" y2="296" stroke="#6b7f9e" stroke-width="1.6" marker-end="url(#ar)"/>
+
+  <!-- 基础设施 -->
+  <rect x="40" y="298" width="246" height="72" rx="10" fill="#f1ebfd" stroke="#c4b5fd" stroke-width="1.5"/>
+  <text x="163" y="324" text-anchor="middle" font-size="12.5" font-weight="700" fill="#6d28d9">注册中心</text>
+  <text x="163" y="343" text-anchor="middle" font-size="11" fill="#6b7280">Consul / Nacos / Zookeeper</text>
+  <text x="163" y="360" text-anchor="middle" font-size="10.5" fill="#94a3b8">服务注册发现 · 元数据</text>
+
+  <rect x="307" y="298" width="246" height="72" rx="10" fill="#e8f6ec" stroke="#86efac" stroke-width="1.5"/>
+  <text x="430" y="324" text-anchor="middle" font-size="12.5" font-weight="700" fill="#15803d">Redis 分布式缓存</text>
+  <text x="430" y="343" text-anchor="middle" font-size="11" fill="#6b7280">缓存拦截 · 分布式锁</text>
+  <text x="430" y="360" text-anchor="middle" font-size="10.5" fill="#94a3b8">TCC 事务日志存储</text>
+
+  <rect x="574" y="298" width="246" height="72" rx="10" fill="#fdf3e3" stroke="#fcd34d" stroke-width="1.5"/>
+  <text x="697" y="324" text-anchor="middle" font-size="12.5" font-weight="700" fill="#b45309">数据库</text>
+  <text x="697" y="343" text-anchor="middle" font-size="11" fill="#6b7280">MySQL / PG / SQL Server</text>
+  <text x="697" y="360" text-anchor="middle" font-size="10.5" fill="#94a3b8">EF Core / FreeSql / Dapper</text>
+</svg>
+</div>
+
+<h3>分层职责</h3>
+<table>
+<thead><tr><th style="width:24%">层</th><th>职责</th></tr></thead>
+<tbody>
+<tr><td><b>服务引擎 + 模块化</b></td><td>主机初始化、模块解析 / 依赖拓扑排序 / 加载、服务注册与解析。借鉴 ABP 模块设计。</td></tr>
+<tr><td><b>RPC 通信层</b></td><td>DotNetty + TCP 长连接、Autofac 动态代理、JSON / MessagePack / ProtoBuf 编解码、心跳检测、RPC Token 保护。</td></tr>
+<tr><td><b>微服务治理层</b></td><td>注册发现、负载均衡、超时、故障转移、熔断（Polly）、限流、降级、缓存拦截。</td></tr>
+<tr><td><b>主机类型</b></td><td>通用 / Web / WebSocket / 网关，四种构建方式覆盖不同部署场景。</td></tr>
+<tr><td><b>可观测性</b></td><td>SkyAPM 链路追踪（HTTP / RPC / TCC / EFCore）、Serilog 结构化日志、Dashboard 集群控制台。</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- 主机 -->
+<section id="host">
+<h2><span class="n">3</span>四种主机类型</h2>
+<p>这是最基础的选型决策，决定了应用对外暴露什么能力。</p>
+<div class="grid g4">
+  <div class="host">
+    <div class="tag">最常用</div>
+    <h4>通用主机</h4>
+    <code class="api">ConfigureSilkyGeneralHostDefaults()</code>
+    <ul>
+      <li>对外 HTTP <span class="no">✕</span></li>
+      <li>RPC 服务 <span class="yes">✓</span></li>
+      <li>WebSocket <span class="no">✕</span></li>
+    </ul>
+  </div>
+  <div class="host">
+    <h4>Web 主机</h4>
+    <code class="api">ConfigureSilkyWebHostDefaults(...)</code>
+    <ul>
+      <li>对外 HTTP <span class="yes">✓</span></li>
+      <li>RPC 服务 <span class="yes">✓</span></li>
+      <li>WebSocket <span class="no">✕</span></li>
+    </ul>
+  </div>
+  <div class="host">
+    <h4>WebSocket 主机</h4>
+    <code class="api">ConfigureSilkyWebSocketDefaults()</code>
+    <ul>
+      <li>对外 HTTP <span class="no">✕</span></li>
+      <li>RPC 服务 <span class="yes">✓</span></li>
+      <li>WebSocket <span class="yes">✓</span></li>
+    </ul>
+  </div>
+  <div class="host">
+    <div class="tag">集群入口</div>
+    <h4>网关主机</h4>
+    <code class="api">ConfigureSilkyGatewayDefaults(...)</code>
+    <ul>
+      <li>对外 HTTP <span class="yes">✓</span></li>
+      <li>RPC 服务 <span class="no">✕</span></li>
+      <li>WebSocket <span class="yes">✓</span> 代理</li>
+    </ul>
+  </div>
+</div>
+
+<h3>最小可运行示例</h3>
+<div class="grid g2">
+<div class="card">
+<h3 style="margin-top:0">① 契约层（独立项目，供其他服务引用）</h3>
+<pre style="margin:0"><code><span class="a">[ServiceRoute]</span>
+<span class="k">public interface</span> <span class="t">IGreetingAppService</span>
+{
+    Task&lt;<span class="k">string</span>&gt; <span class="f">Say</span>(<span class="k">string</span> line);
+}</code></pre>
+<h3>② 实现层</h3>
+<pre style="margin:0"><code><span class="k">public class</span> <span class="t">GreetingAppService</span> : <span class="t">IGreetingAppService</span>
+{
+    <span class="k">public</span> Task&lt;<span class="k">string</span>&gt; <span class="f">Say</span>(<span class="k">string</span> line)
+        =&gt; Task.FromResult(<span class="s">$"Hello {line}"</span>);
+}</code></pre>
+<p style="font-size:12.7px;color:var(--muted);margin:10px 0 0">就这样 —— 自动变成可被 RPC 调用、可被网关暴露为 <code>GET /api/greeting/say</code> 的微服务。</p>
+</div>
+<div class="card">
+<h3 style="margin-top:0">③ 网关 Startup</h3>
+<pre style="margin:0"><code><span class="k">public void</span> <span class="f">ConfigureServices</span>(IServiceCollection services)
+{
+    services.<span class="a">AddSilkyHttpCore</span>()
+        .<span class="a">AddSwaggerDocuments</span>()
+        .<span class="a">AddRouting</span>()
+        .<span class="a">AddDashboard</span>();
+}
+
+<span class="k">public void</span> <span class="f">Configure</span>(IApplicationBuilder app, ...)
+{
+    app.<span class="a">UseDashboard</span>();
+    app.<span class="a">UseRouting</span>();
+    app.<span class="a">UseWebSockets</span>();
+    app.<span class="a">UseSilkyWebSocketsProxy</span>();
+    app.<span class="a">UseSilkyHttpServer</span>();
+    app.<span class="a">UseEndpoints</span>(e =&gt; e.<span class="a">MapSilkyRpcServices</span>());
+}</code></pre>
+</div>
+</div>
+
+<div class="note info">
+  <b>脚手架：</b><code>dotnet new --install Silky.App.Template</code> → <code>dotnet new silky.app -n MyApp</code>，一键生成含 Docker Compose、Apollo、SkyWalking 的生产级骨架。
+</div>
+</section>
+
+<!-- 路由推导 -->
+<section id="route">
+<h2><span class="n">4</span>路由推导器</h2>
+<p>路由生成是日常最常用也最容易踩坑的部分。改动下面任意输入，实时看推导结果。</p>
+<div class="derive">
+  <div class="row">
+    <div>
+      <label>接口名</label>
+      <input id="iface" value="IProductAppService" placeholder="IProductAppService">
+    </div>
+    <div>
+      <label>方法名</label>
+      <input id="method" value="GetByIdAsync" placeholder="GetByIdAsync">
+    </div>
+    <div>
+      <label>参数类型</label>
+      <select id="ptype">
+        <option value="simple">全部简单类型（string/int/long…）</option>
+        <option value="complex">含复杂对象入参</option>
+      </select>
+    </div>
+    <div>
+      <label>HTTP 特性</label>
+      <select id="attr">
+        <option value="none">无（自动推断）</option>
+        <option value="get">[HttpGet]</option>
+        <option value="get-t">[HttpGet("{id:long}")]</option>
+        <option value="post">[HttpPost]</option>
+        <option value="put">[HttpPut]</option>
+        <option value="delete-t">[HttpDelete("{id}")]</option>
+      </select>
+    </div>
+    <div>
+      <label>RESTful 风格</label>
+      <select id="restful">
+        <option value="1">开启（默认）</option>
+        <option value="0">关闭</option>
+      </select>
+    </div>
+    <div>
+      <label>路由模板</label>
+      <input id="tpl" value="api/{appservice}">
+    </div>
+  </div>
+  <div class="out">
+    <div class="line"><span class="lbl">HTTP 方法</span><span class="m" id="o-method">GET</span><span style="color:#7d8899;font-size:12.5px" id="o-why"></span></div>
+    <div class="line"><span class="lbl">服务名</span><span class="path" id="o-svc"></span></div>
+    <div class="line"><span class="lbl">最终路由</span><span class="path" id="o-path" style="font-size:15.5px"></span></div>
+    <div class="steps" id="o-steps"></div>
+  </div>
+</div>
+
+<h3>推导规则</h3>
+<div class="grid g2">
+<div class="card">
+<h3 style="margin-top:0">① 服务名推导</h3>
+<pre style="margin:0"><code>IAccountAppService
+  → 去 "I" 前缀     →  AccountAppService
+  → 移除 "AppService" →  <span class="t">account</span></code></pre>
+<p style="font-size:12.6px;color:var(--muted);margin-top:9px"><code>AppService</code> 来自 <code>SilkyApplicationCreationOptions.ServiceTemplateName</code> 默认值。</p>
+<h3>② HTTP 方法推断优先级</h3>
+<ol style="font-size:13px;color:#374151;padding-left:20px">
+<li style="margin-bottom:5px">方法标注了 <code>[HttpGet]</code> 等 → 直接采用</li>
+<li style="margin-bottom:5px">未标注 → 参数全为简单类型 = <span class="badge b-get">GET</span>；含复杂对象 = <span class="badge b-post">POST</span></li>
+<li>再按<b>方法名前缀</b>修正（仅对未标注生效）</li>
+</ol>
+<table style="margin-top:11px;box-shadow:none">
+<thead><tr><th>方法名前缀</th><th>修正为</th></tr></thead>
+<tbody>
+<tr><td><code>Create</code></td><td><span class="badge b-post">POST</span></td></tr>
+<tr><td><code>Update</code></td><td><span class="badge b-put">PUT</span></td></tr>
+<tr><td><code>Delete</code></td><td><span class="badge b-del">DELETE</span></td></tr>
+<tr><td><code>Search</code> / <code>Query</code> / <code>Get</code></td><td><span class="badge b-get">GET</span></td></tr>
+</tbody>
+</table>
+</div>
+<div class="card">
+<h3 style="margin-top:0">③ RESTful 前缀剥离表</h3>
+<p style="font-size:12.6px;color:var(--muted)"><code>Governance:ApiIsRESTfulStyle</code> 默认 <code>true</code>。开启后去掉 <code>Async</code> 后缀 + HTTP 语义前缀。</p>
+<table style="box-shadow:none">
+<thead><tr><th>HTTP 方法</th><th>被剥离的前缀</th></tr></thead>
+<tbody>
+<tr><td><span class="badge b-get">GET</span></td><td><code>GetBy</code> <code>GetFor</code> <code>GetFrom</code> <code>Get</code></td></tr>
+<tr><td><span class="badge b-post">POST</span></td><td><code>CreateOrUpdate</code> <code>CreateOrModify</code> <code>Create</code> <code>Add</code></td></tr>
+<tr><td><span class="badge b-put">PUT</span> / PATCH</td><td><code>CreateOrUpdate</code> <code>CreateOrModify</code> <code>Update</code> <code>Put</code> <code>Modify</code></td></tr>
+<tr><td><span class="badge b-del">DELETE</span></td><td><code>Delete</code></td></tr>
+</tbody>
+</table>
+<h3>④ 对照表</h3>
+<table style="box-shadow:none">
+<thead><tr><th>方法</th><th>生成路由</th></tr></thead>
+<tbody>
+<tr><td><code>Create(CreateInput)</code></td><td><span class="badge b-post">POST</span> <code>api/account</code></td></tr>
+<tr><td><code>Update(UpdateInput)</code></td><td><span class="badge b-put">PUT</span> <code>api/product</code></td></tr>
+<tr><td><code>Say(string)</code></td><td><span class="badge b-get">GET</span> <code>api/greeting/say</code></td></tr>
+<tr><td><code>Get(long)</code> + <code>[HttpGet("{id:long}")]</code></td><td><span class="badge b-get">GET</span> <code>api/product/{id:long}</code></td></tr>
+<tr><td><code>Delete(long)</code> + <code>[HttpDelete("{id}")]</code></td><td><span class="badge b-del">DELETE</span> <code>api/product/{id}</code></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+
+<!-- RPC -->
+<section id="rpc">
+<h2><span class="n">5</span>RPC 调用：像本地方法一样</h2>
+<div class="grid g2">
+<div>
+<p>调用方只引用<b>契约层</b>，注入接口即可。底层由 Autofac 动态代理接管，调用体验与本地方法完全一致。</p>
+<pre><code><span class="k">public class</span> <span class="t">OrderAppService</span> : <span class="t">IOrderAppService</span>
+{
+    <span class="k">private readonly</span> <span class="t">IGreetingAppService</span> _greeting;
+    <span class="k">private readonly</span> <span class="t">IProductAppService</span> _product;
+
+    <span class="k">public</span> <span class="f">OrderAppService</span>(<span class="t">IGreetingAppService</span> greeting,
+                             <span class="t">IProductAppService</span> product)
+    { _greeting = greeting; _product = product; }
+
+    <span class="k">public async</span> Task&lt;<span class="k">string</span>&gt; <span class="f">CreateAsync</span>(<span class="k">string</span> name)
+        =&gt; <span class="k">await</span> _greeting.<span class="f">Say</span>(name);  <span class="c">// 透明 RPC</span>
+}</code></pre>
+</div>
+<div>
+<h3 style="margin-top:0">代理内部串起的完整链路</h3>
+<div class="flow" style="flex-direction:column">
+  <div class="step" style="border-radius:10px 10px 0 0"><h5><span class="dot" style="background:#7c3aed"></span>缓存拦截</h5><p>命中缓存直接返回，不发网络请求</p></div>
+  <div class="step"><h5><span class="dot" style="background:#dc2626"></span>熔断 / 限流</h5><p>Polly 熔断保护、实例级并发控制</p></div>
+  <div class="step"><h5><span class="dot" style="background:#2f6feb"></span>负载均衡</h5><p>轮询 / 随机 / 哈希一致性，剔除不健康实例</p></div>
+  <div class="step"><h5><span class="dot" style="background:#16a34a"></span>RPC 调用</h5><p>DotNetty TCP 长连接</p></div>
+  <div class="step" style="border-radius:0 0 10px 10px"><h5><span class="dot" style="background:#d97706"></span>故障转移 / 降级</h5><p>异常重试其他实例，最终走 Fallback</p></div>
+</div>
+</div>
+</div>
+
+<h3>RpcContext：隐式传参</h3>
+<p>基于 <code>AsyncLocal</code> 的 RPC 上下文，服务间透传数据，不污染方法签名。TCC 事务里经常用到。</p>
+<pre><code><span class="c">// 生产者</span>
+RpcContext.Context.<span class="a">SetInvokeAttachment</span>(<span class="s">"orderId"</span>, order.Id.ToString());
+
+<span class="c">// 消费者</span>
+<span class="k">var</span> orderId = RpcContext.Context.<span class="a">GetInvokeAttachment</span>(<span class="s">"orderId"</span>);
+
+<span class="c">// 连接信息（客户端/服务端 Host、Port、协议）</span>
+RpcContext.Context.Connection;</code></pre>
+</section>
+
+<!-- 治理 -->
+<section id="gov">
+<h2><span class="n">6</span>服务治理</h2>
+<h3>① 全局配置（<code>Governance</code> 节点）</h3>
+<table>
+<thead><tr><th style="width:31%">属性</th><th style="width:44%">说明</th><th>默认值</th></tr></thead>
+<tbody>
+<tr><td><code>ShuntStrategy</code></td><td>负载均衡：<code>Polling</code> / <code>Random</code> / <code>HashAlgorithm</code></td><td><code>Polling</code></td></tr>
+<tr><td><code>TimeoutMillSeconds</code></td><td>RPC 超时（ms），<code>0</code> = 不超时（适合调试）</td><td><code>5000</code></td></tr>
+<tr><td><code>EnableCachingInterceptor</code></td><td>缓存拦截总开关</td><td><code>true</code></td></tr>
+<tr><td><code>EnableCircuitBreaker</code></td><td>熔断开关</td><td><code>true</code></td></tr>
+<tr><td><code>ExceptionsAllowedBeforeBreaking</code></td><td>触发熔断的连续异常次数</td><td><code>3</code></td></tr>
+<tr><td><code>BreakerSeconds</code></td><td>熔断持续时长（s）</td><td><code>60</code></td></tr>
+<tr><td><code>RetryTimes</code> / <code>RetryIntervalMillSeconds</code></td><td>故障转移重试次数 / 间隔（ms）</td><td><code>3</code> / <code>50</code></td></tr>
+<tr><td><code>MaxConcurrentHandlingCount</code></td><td>单实例最大并发处理数</td><td><code>50</code></td></tr>
+<tr><td><code>ApiIsRESTfulStyle</code></td><td>RESTful 路由风格（影响路由生成）</td><td><code>true</code></td></tr>
+</tbody>
+</table>
+<div class="note info"><b>注意：</b>业务异常（友好异常）<b>不会</b>触发熔断，只有 IO、通信等非业务异常才会。</div>
+
+<h3>② 方法级覆盖：<code>[Governance]</code></h3>
+<pre><code><span class="c">// 禁止外网访问，只允许集群内部 RPC 调用</span>
+[<span class="a">Governance</span>(ProhibitExtranet = <span class="k">true</span>)]
+Task&lt;<span class="t">GetProductOutput</span>&gt; <span class="f">DeductStock</span>(<span class="t">DeductStockInput</span> input);
+
+<span class="c">// 覆盖负载均衡与超时</span>
+[<span class="a">Governance</span>(ShuntStrategy = ShuntStrategy.HashAlgorithm, TimeoutMillSeconds = <span class="s">10000</span>)]</code></pre>
+<p style="font-size:13px"><span class="badge b-tip">实践建议</span> 像"扣减库存""扣减余额"这类内部方法，都应该加 <code>ProhibitExtranet = true</code>。</p>
+
+<h3>③ 服务降级</h3>
+<pre><code>[<span class="a">Fallback</span>(<span class="k">typeof</span>(<span class="t">IProductAppService</span>), MethodName = <span class="s">"GetFallback"</span>)]
+Task&lt;<span class="t">GetProductOutput</span>&gt; <span class="f">Get</span>(<span class="k">long</span> id);</code></pre>
+
+<h3>④ 缓存拦截（性能杀手锏）</h3>
+<p>命中缓存直接返回，<b>根本不发网络请求</b>。三个特性：</p>
+<div class="grid g3">
+<div class="card">
+<h3 style="margin-top:0;font-size:13.5px">读 <span class="badge b-get">Get</span></h3>
+<pre style="margin:0;font-size:12px"><code>[<span class="a">GetCachingIntercept</span>(
+  <span class="s">"Account:Id:{id}"</span>,
+  OnlyCurrentUserData=<span class="k">true</span>)]</code></pre>
+</div>
+<div class="card">
+<h3 style="margin-top:0;font-size:13.5px">写 <span class="badge b-put">Update</span></h3>
+<pre style="margin:0;font-size:12px"><code>[<span class="a">UpdateCachingIntercept</span>(
+  <span class="s">"Account:Id:{Id}"</span>)]</code></pre>
+</div>
+<div class="card">
+<h3 style="margin-top:0;font-size:13.5px">删 <span class="badge b-del">Remove</span></h3>
+<pre style="margin:0;font-size:12px"><code>[<span class="a">RemoveCachingIntercept</span>(
+  <span class="s">"GetAccountOutput"</span>,
+  <span class="s">"Account:Id:{id}"</span>)]</code></pre>
+</div>
+</div>
+<ul style="font-size:13px;color:#374151;padding-left:20px;margin-top:13px">
+<li style="margin-bottom:4px">Key 模板支持 <code>{参数名}</code> 占位，也支持 <code>{0}</code> 序号</li>
+<li style="margin-bottom:4px"><code>OnlyCurrentUserData</code>：按当前用户隔离缓存（<b>避免用户数据串号</b>）</li>
+<li style="margin-bottom:4px"><code>IgnoreMultiTenancy</code>：忽略多租户维度</li>
+<li>启用 Redis 后端：引入 <code>Silky.Caching.StackExchangeRedis</code> + <code>DistributedCache:Redis:IsEnabled = true</code></li>
+</ul>
+</section>
+
+<!-- TCC -->
+<section id="tcc">
+<h2><span class="n">7</span>TCC 分布式事务</h2>
+<p>内置 TCC（Try-Confirm-Cancel），通过 AOP 拦截器 + Redis 事务日志保证最终一致性。<b>接口标注 <code>[Transaction]</code>，实现标注 <code>[TccTransaction]</code>。</b></p>
+
+<div class="flow">
+  <div class="step">
+    <h5><span class="dot" style="background:#2f6feb"></span>Try</h5>
+    <p>预留资源，透传业务 ID 给后续阶段</p>
+  </div>
+  <div class="step">
+    <h5><span class="dot" style="background:#16a34a"></span>Confirm</h5>
+    <p>全部成功 → 推进到终态</p>
+  </div>
+  <div class="step">
+    <h5><span class="dot" style="background:#dc2626"></span>Cancel</h5>
+    <p>任一失败 → 回滚补偿</p>
+  </div>
+</div>
+
+<div class="grid g2">
+<div class="card">
+<h3 style="margin-top:0">契约层</h3>
+<pre style="margin:0"><code>[<span class="a">ServiceRoute</span>]
+<span class="k">public interface</span> <span class="t">IOrderAppService</span>
+{
+    [<span class="a">Transaction</span>]
+    Task&lt;<span class="t">GetOrderOutput</span>&gt; <span class="f">Create</span>(<span class="t">CreateOrderInput</span> input);
+}</code></pre>
+<h3>实现层</h3>
+<pre style="margin:0"><code>[<span class="a">TccTransaction</span>(ConfirmMethod = <span class="s">"OrderCreateConfirm"</span>,
+                CancelMethod  = <span class="s">"OrderCreateCancel"</span>)]
+[<span class="a">UnitOfWork</span>]
+<span class="k">public async</span> Task&lt;<span class="t">GetOrderOutput</span>&gt; <span class="f">Create</span>(<span class="t">CreateOrderInput</span> input)
+    =&gt; <span class="k">await</span> _orderDomainService.<span class="f">Create</span>(input);
+
+[<span class="a">UnitOfWork</span>]
+<span class="k">public async</span> Task&lt;<span class="t">GetOrderOutput</span>&gt; <span class="f">OrderCreateConfirm</span>(<span class="t">CreateOrderInput</span> input)
+{
+    <span class="k">var</span> orderId = RpcContext.Context.<span class="a">GetInvokeAttachment</span>(<span class="s">"orderId"</span>);
+    <span class="k">var</span> order = <span class="k">await</span> _orderDomainService.<span class="f">GetById</span>(orderId.To&lt;<span class="k">long</span>&gt;());
+    order.Status = OrderStatus.Payed;   <span class="c">// 推进终态</span>
+    <span class="k">return</span> (<span class="k">await</span> _orderDomainService.<span class="f">Update</span>(order)).Adapt&lt;<span class="t">GetOrderOutput</span>&gt;();
+}
+
+[<span class="a">UnitOfWork</span>]
+<span class="k">public async</span> Task <span class="f">OrderCreateCancel</span>(<span class="t">CreateOrderInput</span> input)
+{
+    <span class="k">var</span> orderId = RpcContext.Context.<span class="a">GetInvokeAttachment</span>(<span class="s">"orderId"</span>);
+    <span class="k">if</span> (orderId != <span class="k">null</span>)   <span class="c">// 空回滚防护</span>
+    {
+        <span class="k">var</span> order = <span class="k">await</span> _orderDomainService.<span class="f">GetById</span>(orderId.To&lt;<span class="k">long</span>&gt;());
+        order.Status = OrderStatus.UnPay;
+        <span class="k">await</span> _orderDomainService.<span class="f">Update</span>(order);
+    }
+}</code></pre>
+</div>
+<div class="card">
+<h3 style="margin-top:0">必须遵守的规则</h3>
+<ul style="font-size:13.2px;color:#374151;padding-left:19px;list-style:none">
+<li style="margin-bottom:11px"><b>① 幂等</b><br><span style="color:var(--muted);font-size:12.6px">Confirm / Cancel 必须幂等 —— 网络抖动会重试</span></li>
+<li style="margin-bottom:11px"><b>② 空回滚</b><br><span style="color:var(--muted);font-size:12.6px">Try 未执行就收到 Cancel，需判空处理（见左侧 <code>orderId != null</code>）</span></li>
+<li style="margin-bottom:11px"><b>③ 防悬挂</b><br><span style="color:var(--muted);font-size:12.6px">Cancel 先于 Try 到达的情况</span></li>
+<li style="margin-bottom:11px"><b>④ 签名一致</b><br><span style="color:var(--muted);font-size:12.6px">Confirm / Cancel 的方法参数必须与 Try <b>完全一致</b></span></li>
+<li><b>⑤ 自动恢复</b><br><span style="color:var(--muted);font-size:12.6px">定时任务恢复悬挂事务：<code>ScheduledRecoveryDelay</code> 默认 30s，<code>RetryMax</code> 10 次</span></li>
+</ul>
+<div class="note warn" style="margin-bottom:0">
+  Try 阶段通过 <code>RpcContext</code> 透传业务 ID（示例中的 <code>orderId</code>），Confirm / Cancel 才能拿到正确的记录。这是官方 sample 的标准写法。
+</div>
+</div>
+</div>
+</section>
+
+<!-- 配置 -->
+<section id="config">
+<h2><span class="n">8</span>配置速查</h2>
+<p>配置优先级（低 → 高）：<code>appsettings.yml</code> → <code>appsettings.{Env}.yml</code> → 环境变量 → 命令行参数。支持 JSON / YAML / Apollo / 环境变量。</p>
+<div class="tabs">
+  <button class="tab on" data-p="rpc">RPC</button>
+  <button class="tab" data-p="reg">注册中心</button>
+  <button class="tab" data-p="cache">缓存</button>
+  <button class="tab" data-p="jwt">JWT / 网关</button>
+  <button class="tab" data-p="misc">其他</button>
+</div>
+
+<div class="pane on" id="p-rpc">
+<table>
+<thead><tr><th style="width:30%">属性</th><th style="width:46%">说明</th><th>默认</th></tr></thead>
+<tbody>
+<tr><td><code>Token</code></td><td><span class="badge b-must">必填</span> RPC 通信密钥，集群内所有服务必须一致</td><td>—</td></tr>
+<tr><td><code>Port</code></td><td>RPC 监听端口</td><td><code>2200</code></td></tr>
+<tr><td><code>Host</code></td><td>监听 IP，<code>0.0.0.0</code> 自动获取本机 IP</td><td><code>0.0.0.0</code></td></tr>
+<tr><td><code>Cidr</code></td><td>多网卡时用 CIDR 指定使用哪个网段</td><td>—</td></tr>
+<tr><td><code>IsSsl</code> / <code>SslCertificateName</code></td><td>SSL/TLS 加密配置</td><td><code>false</code></td></tr>
+<tr><td><code>ConnectTimeout</code></td><td>建立连接超时（ms）</td><td><code>300</code></td></tr>
+<tr><td><code>EnableHeartbeat</code></td><td>心跳保活长连接</td><td><code>true</code></td></tr>
+<tr><td><code>HeartbeatWatchIntervalSeconds</code></td><td>心跳间隔（s），小于 60 自动修正为 60</td><td><code>300</code></td></tr>
+<tr><td><code>UseTransportClientPool</code> / <code>TransportClientPoolNumber</code></td><td>传输连接池</td><td><code>true</code> / <code>50</code></td></tr>
+<tr><td><code>EnableMonitor</code></td><td>RPC 调用监控</td><td><code>true</code></td></tr>
+</tbody>
+</table>
+<pre><code><span class="a">rpc</span>:
+  token: ypjdYOzNd4FwENJiEARMLWwK0v7QUHPW   <span class="c"># 必填</span>
+  port: 2200
+  host: 0.0.0.0
+  connectTimeout: 300
+  enableHeartbeat: <span class="k">true</span></code></pre>
+</div>
+
+<div class="pane" id="p-reg">
+<p>三种注册中心通过 <code>Type</code> 切换 —— <b>只需换 NuGet 包 + 改一行配置</b>。</p>
+<pre><code><span class="c"># Consul —— 需 Silky.RegistryCenter.Consul</span>
+<span class="a">registrycenter</span>:
+  type: Consul
+  address: http://127.0.0.1:8500
+
+<span class="c"># Zookeeper —— 需 Silky.RegistryCenter.Zookeeper</span>
+<span class="a">registrycenter</span>:
+  type: Zookeeper
+  connectionStrings: <span class="s">"127.0.0.1:2181"</span>   <span class="c"># 多节点逗号分隔；多集群分号分隔</span>
+
+<span class="c"># Nacos —— 需 Silky.RegistryCenter.Nacos</span>
+<span class="a">registrycenter</span>:
+  type: Nacos
+  serverAddresses:
+    - <span class="s">"http://127.0.0.1:8848"</span>
+  userName: nacos
+  password: nacos
+  serverGroupName: SILKYGROUP</code></pre>
+<table>
+<thead><tr><th style="width:22%">注册中心</th><th style="width:30%">关键属性</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><b>Consul</b></td><td><code>Address</code> <code>Token</code> <code>HealthCheck</code></td><td>健康检查默认开启，心跳续约间隔 15s</td></tr>
+<tr><td><b>Zookeeper</b></td><td><code>ConnectionStrings</code> <code>Scheme</code> <code>Auth</code></td><td>支持 ACL 认证：World / Auth / Digest / Ip</td></tr>
+<tr><td><b>Nacos</b></td><td><code>ServerAddresses</code> <code>Namespace</code> <code>NamingUseRpc</code></td><td>继承 Nacos .NET SDK 的 <code>NacosSdkOptions</code></td></tr>
+<tr><td>通用</td><td><code>RegisterSwaggerDoc</code></td><td>是否向注册中心同步 Swagger 文档（默认 <code>true</code>）</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="pane" id="p-cache">
+<pre><code><span class="a">distributedCache</span>:
+  hideErrors: <span class="k">true</span>
+  keyPrefix: <span class="s">"myapp:"</span>
+  redis:
+    isEnabled: <span class="k">true</span>                <span class="c"># 启用后替换默认内存缓存</span>
+    configuration: <span class="s">"127.0.0.1:6379,password=xxx"</span>
+  globalCacheEntryOptions:
+    slidingExpiration: <span class="s">"00:20:00"</span>     <span class="c"># 默认 20 分钟</span></code></pre>
+<table>
+<thead><tr><th style="width:32%">属性</th><th style="width:44%">说明</th><th>默认</th></tr></thead>
+<tbody>
+<tr><td><code>HideErrors</code></td><td>缓存操作出错时是否隐藏错误</td><td><code>true</code></td></tr>
+<tr><td><code>KeyPrefix</code></td><td>缓存 Key 全局前缀</td><td>空</td></tr>
+<tr><td><code>Redis.IsEnabled</code></td><td>启用 Redis 作为缓存后端</td><td><code>false</code></td></tr>
+<tr><td><code>SlidingExpiration</code></td><td>滑动过期（无访问则过期），不超过绝对过期时间</td><td><code>00:20:00</code></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="pane" id="p-jwt">
+<div class="note warn"><b>关键一致性：</b>网关的 <code>Gateway:JwtSecret</code> 必须与签发服务的 <code>JwtSettings:Secret</code> <b>完全一致</b>，否则网关解析不了 Token。</div>
+<pre><code><span class="c"># 签发服务</span>
+<span class="a">jwtSettings</span>:
+  secret: jaoaNPA1fo1rcPfK23iNufsQKkhTy8eh   <span class="c"># 必填</span>
+  algorithm: HS256
+  expiredTime: 24                            <span class="c"># 单位：小时</span>
+
+<span class="c"># 网关</span>
+<span class="a">gateway</span>:
+  jwtSecret: jaoaNPA1fo1rcPfK23iNufsQKkhTy8eh  <span class="c"># 必须同上</span></code></pre>
+<h3>安全机制一览</h3>
+<table>
+<thead><tr><th style="width:24%">机制</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><b>网关统一认证</b></td><td>JWT 在网关层校验，业务服务不用重复实现认证逻辑</td></tr>
+<tr><td><b>RPC Token</b></td><td>集群内共享 <code>rpc:token</code>，外部无法绕过网关直接打 RPC 端口</td></tr>
+<tr><td><b>接口级鉴权</b></td><td><code>[Authorize]</code>（接口级）/ <code>[AllowAnonymous]</code>（方法级）/ <code>[Governance(ProhibitExtranet = true)]</code></td></tr>
+<tr><td><b>SSL</b></td><td>RPC 通信支持 SSL/TLS 加密</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="pane" id="p-misc">
+<table>
+<thead><tr><th style="width:20%">节点</th><th style="width:32%">用途</th><th>要点</th></tr></thead>
+<tbody>
+<tr><td><code>WebSocket</code></td><td>WebSocket 服务</td><td>默认端口 <code>3000</code>，<code>Token</code> 默认 <code>websocket</code></td></tr>
+<tr><td><code>SwaggerDocument</code></td><td>API 文档聚合</td><td><code>OrganizationMode: AllAndGroup</code> 全量 + 按服务分组</td></tr>
+<tr><td><code>Dashboard</code></td><td>集群管理控制台</td><td><code>UseAuth</code>、<code>StatsPollingInterval</code> 默认 2000ms</td></tr>
+<tr><td><code>Auditing</code></td><td>审计日志</td><td>默认<b>不</b>记录 GET 请求（查询操作）</td></tr>
+<tr><td><code>CorsAccessor</code></td><td>跨域</td><td><code>WithOrigins</code> 空数组 = 允许所有来源</td></tr>
+<tr><td><code>DistributedTransaction</code></td><td>TCC 事务</td><td><code>TransactionType: Tcc</code>，重试上限 <code>RetryMax</code> 10</td></tr>
+<tr><td><code>RateLimiting</code></td><td>HTTP 限流</td><td>基于 AspNetCoreRateLimit，支持 IP / ClientId 两种策略</td></tr>
+<tr><td><code>HealthChecksUI</code></td><td>健康检查</td><td>配合 <code>Silky.HealthChecks.Rpc</code></td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- 特性速查 -->
+<section id="attr">
+<h2><span class="n">9</span>特性速查</h2>
+<div class="card">
+<h3 style="margin-top:0">路由</h3>
+<div class="attr"><span class="nm">[ServiceRoute]</span><span class="ds">默认模板 <code>api/{appservice}</code></span></div>
+<div class="attr"><span class="nm">[ServiceRoute(template: "api/order/{appservice}")]</span><span class="ds">自定义路由模板</span></div>
+<div class="attr"><span class="nm">[ServiceRoute(ServiceName = "order")]</span><span class="ds">显式指定服务名</span></div>
+<div class="attr"><span class="nm">[HttpGet("{id:long}")] [HttpPost] [HttpPut] [HttpDelete("{id}")]</span><span class="ds">指定 HTTP 方法与子路径</span></div>
+
+<h3>鉴权</h3>
+<div class="attr"><span class="nm">[Authorize]</span><span class="ds">接口级，要求认证</span></div>
+<div class="attr"><span class="nm">[AllowAnonymous]</span><span class="ds">方法级，匿名放行（如登录接口）</span></div>
+
+<h3>治理</h3>
+<div class="attr"><span class="nm">[Governance(ProhibitExtranet = true)]</span><span class="ds">禁止外网访问，仅集群内 RPC 可调</span></div>
+<div class="attr"><span class="nm">[Governance(ShuntStrategy = ShuntStrategy.HashAlgorithm, …)]</span><span class="ds">方法级覆盖负载均衡 / 超时 / 熔断 / 重试</span></div>
+<div class="attr"><span class="nm">[Fallback(typeof(IXxxAppService), MethodName = "Xxx")]</span><span class="ds">RPC 失败时执行降级方法</span></div>
+
+<h3>缓存拦截</h3>
+<div class="attr"><span class="nm">[GetCachingIntercept("key:{id}", OnlyCurrentUserData = true)]</span><span class="ds">读：命中直接返回</span></div>
+<div class="attr"><span class="nm">[UpdateCachingIntercept("key:{Id}")]</span><span class="ds">写：更新缓存（<code>AllowMultiple = true</code>）</span></div>
+<div class="attr"><span class="nm">[RemoveCachingIntercept("CacheName", "key:{id}")]</span><span class="ds">删：失效缓存，需指定 cacheName 或 Type</span></div>
+
+<h3>事务</h3>
+<div class="attr"><span class="nm">[Transaction]</span><span class="ds">标注在<b>接口</b>方法上，声明参与分布式事务</span></div>
+<div class="attr"><span class="nm">[TccTransaction(ConfirmMethod = "…", CancelMethod = "…")]</span><span class="ds">标注在<b>实现</b>方法上，指定 Confirm / Cancel</span></div>
+<div class="attr"><span class="nm">[UnitOfWork]</span><span class="ds">工作单元，配合 EF Core 使用</span></div>
+</div>
+</section>
+
+<!-- 包清单 -->
+<section id="pkg">
+<h2><span class="n">10</span>NuGet 包清单</h2>
+<p>Silky 完全兼容 ASP.NET Core 生态，按需引入。</p>
+<div class="grid g2">
+<table>
+<thead><tr><th style="width:26%">类别</th><th>包</th></tr></thead>
+<tbody>
+<tr><td><b>核心</b></td><td><code>Silky.Agent.Host</code>、<code>Silky.Core</code>、<code>Silky.Rpc</code></td></tr>
+<tr><td><b>ORM</b></td><td><code>Silky.EntityFrameworkCore</code>、FreeSql、Dapper</td></tr>
+<tr><td><b>注册中心</b></td><td><code>Silky.RegistryCenter.{Zookeeper,Nacos,Consul}</code></td></tr>
+<tr><td><b>缓存</b></td><td><code>Silky.Caching</code>、<code>Silky.Caching.StackExchangeRedis</code></td></tr>
+<tr><td><b>对象映射</b></td><td><code>Silky.ObjectMapper.AutoMapper</code> / <code>Mapster</code></td></tr>
+<tr><td><b>参数校验</b></td><td><code>Silky.Validation</code> / <code>Silky.Validation.Fluent</code></td></tr>
+</tbody>
+</table>
+<table>
+<thead><tr><th style="width:26%">类别</th><th>包</th></tr></thead>
+<tbody>
+<tr><td><b>事务</b></td><td><code>Silky.Transaction.Tcc</code>、<code>Silky.Transaction.Repository.Redis</code></td></tr>
+<tr><td><b>消息总线</b></td><td><code>Silky.MassTransit</code>、CAP</td></tr>
+<tr><td><b>HTTP 增强</b></td><td><code>Silky.Http.{Core,Swagger,Dashboard,Identity,CorsAccessor,RateLimit,Auditing,MiniProfiler}</code></td></tr>
+<tr><td><b>链路追踪</b></td><td><code>Silky.SkyApm.Agent</code></td></tr>
+<tr><td><b>日志</b></td><td><code>Silky.Logging.Serilog</code></td></tr>
+<tr><td><b>分布式锁 / 健康检查</b></td><td><code>Silky.DistributedLock.Redis</code>、<code>Silky.HealthChecks.Rpc</code></td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>推荐的项目分层（DDD，照抄官方 sample）</h3>
+<pre><code>Silky.Order.Application.Contracts   <span class="c">← 契约层：接口 + DTO（被其他服务引用）</span>
+  └── Orders/IOrderAppService.cs
+Silky.Order.Application             <span class="c">← 实现层：应用服务</span>
+Silky.Order.Domain.Shared           <span class="c">← 领域共享：枚举、常量</span>
+Silky.Order.Domain                  <span class="c">← 领域层：实体、领域服务</span>
+Silky.Order.EntityFrameworkCore     <span class="c">← 数据访问</span>
+Silky.Order.Database.Migrations     <span class="c">← 迁移</span>
+Silky.OrderHost                     <span class="c">← 主机（Program.cs）</span></code></pre>
+<div class="note info"><b>黄金法则：</b>契约层（Application.Contracts）<b>必须独立成项目</b>。调用方只引用契约、不引用实现 —— 这是 Silky 透明 RPC 能成立的前提，也是避免服务间隐式耦合的关键。</div>
+</section>
+
+<!-- 学习路径 -->
+<section id="learn">
+<h2><span class="n">11</span>学习路径</h2>
+<div class="tl">
+  <div class="item">
+    <h4>① 跑通 quickstart</h4>
+    <p><code>samples/quickstart</code> 下有 4 个独立最小工程（generalhost / webhost / websocket / gateway）。先跑通用主机 + 网关，感受"零配置生成 API"。</p>
+  </div>
+  <div class="item">
+    <h4>② 读 samples/microservices</h4>
+    <p>order / account / stock 三个服务构成完整 TCC 事务链路，是理解分布式事务的最佳教材。</p>
+  </div>
+  <div class="item">
+    <h4>③ 用官方模板起项目</h4>
+    <p><code>Silky.App.Template</code> 生成的是生产级骨架（含 Docker Compose、Apollo、SkyWalking、Zookeeper）。</p>
+  </div>
+  <div class="item">
+    <h4>④ 参考 silky.hero</h4>
+    <p>作者写的完整权限管理系统（多租户 + RBAC），在线 Demo：<code>https://hero.silky-fk.com</code>，源码 <code>github.com/liuhll/silky.hero</code>。</p>
+  </div>
+</div>
+</section>
+
+<!-- 踩坑 -->
+<section id="pit">
+<h2><span class="n">12</span>踩坑清单</h2>
+<table>
+<thead><tr><th style="width:22%">坑</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><b>RPC Token 必填</b></td><td><code>rpc:token</code> 不允许为空，且集群内所有服务必须一致，否则连不上</td></tr>
+<tr><td><b>网关 JWT 密钥</b></td><td><code>Gateway:JwtSecret</code> 必须等于 <code>JwtSettings:Secret</code></td></tr>
+<tr><td><b>HTTP 模块中间件</b></td><td>自定义模块派生自 <code>HttpSilkyModule</code> 时，必须在 <code>Startup.Configure</code> 调用 <code>app.ConfigureSilkyRequestPipeline()</code>，否则中间件不生效</td></tr>
+<tr><td><b>路由不符合预期</b></td><td>回看 §4 的方法名前缀剥离规则，或直接显式标注 <code>[HttpGet]</code> / <code>[HttpPost]</code></td></tr>
+<tr><td><b>内部方法暴露外网</b></td><td>记得加 <code>[Governance(ProhibitExtranet = true)]</code></td></tr>
+<tr><td><b>调试时超时</b></td><td>开发环境把 <code>Governance:TimeoutMillSeconds</code> 设为 <code>0</code>（不超时）</td></tr>
+<tr><td><b>TCC 幂等</b></td><td>Confirm / Cancel 必须幂等，必须处理空回滚与悬挂</td></tr>
+<tr><td><b>缓存串号</b></td><td>用户维度数据务必加 <code>OnlyCurrentUserData = true</code></td></tr>
+</tbody>
+</table>
+
+<div class="note info" style="margin-top:20px">
+  <b>延伸资源：</b>官方文档 <a href="https://docs.silky-fk.com/silky/" style="color:var(--accent)">docs.silky-fk.com</a> ｜
+  GitHub <a href="https://github.com/liuhll/silky" style="color:var(--accent)">github.com/liuhll/silky</a> ｜
+  Gitee <a href="https://gitee.com/liuhll2/silky" style="color:var(--accent)">gitee.com/liuhll2/silky</a> ｜
+  交流 QQ 群 <b>934306776</b>
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+(function(){
+  /* ---------- 导航高亮 ---------- */
+  var secs = document.querySelectorAll('section[id]');
+  var links = document.querySelectorAll('.sidebar nav a');
+  function onScroll(){
+    var y = window.scrollY + 90, cur = secs[0];
+    secs.forEach(function(s){ if(s.offsetTop <= y) cur = s; });
+    links.forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('href') === '#' + cur.id);
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  /* ---------- 配置 Tabs ---------- */
+  var tabs = document.querySelectorAll('.tab');
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){
+      tabs.forEach(function(x){ x.classList.remove('on'); });
+      document.querySelectorAll('.pane').forEach(function(p){ p.classList.remove('on'); });
+      t.classList.add('on');
+      var el = document.getElementById('p-' + t.dataset.p);
+      if(el) el.classList.add('on');
+    });
+  });
+
+  /* ---------- 路由推导器 ---------- */
+  // 源码依据：Silky.Rpc/Runtime/Server/Service/ServiceDiscovery/MethodInfoExtensions.cs
+  //          Silky.Rpc/Routing/Template/TemplateHelper.cs
+  var STRIP = {
+    GET:    ['GetBy','GetFor','GetFrom','Get'],
+    POST:   ['CreateOrUpdate','CreateOrModify','Create','Add'],
+    PUT:    ['CreateOrUpdate','CreateOrModify','Update','Put','Modify'],
+    PATCH:  ['CreateOrUpdate','CreateOrModify','Update','Put','Modify'],
+    DELETE: ['Delete']
+  };
+  var PRE = [['Create','POST'],['Update','PUT'],['Delete','DELETE'],
+             ['Search','GET'],['Query','GET'],['Get','GET']];
+
+  var $ = function(id){ return document.getElementById(id); };
+
+  // 源码：methodName.StartsWith(cm) → RemovePreFix(cm)，完全相等时剥离结果为空串
+  function strip(name, list){
+    if(!list) return name;
+    for(var i=0;i<list.length;i++){
+      if(name.length >= list[i].length &&
+         name.substring(0,list[i].length).toLowerCase() === list[i].toLowerCase()){
+        return name.substring(list[i].length);
+      }
+    }
+    return name;
+  }
+  function rmPostFix(name, fix){
+    if(name.length >= fix.length &&
+       name.substring(name.length-fix.length).toLowerCase() === fix.toLowerCase())
+      return name.substring(0, name.length-fix.length);
+    return name;
+  }
+
+  function derive(){
+    var iface = $('iface').value.trim() || 'IXxxAppService';
+    var method = $('method').value.trim() || 'Get';
+    var ptype = $('ptype').value;
+    var attr = $('attr').value;
+    var restful = $('restful').value === '1';
+    var tpl = $('tpl').value.trim() || 'api/{appservice}';
+
+    var steps = [];
+
+    /* 1. 服务名：去 I 前缀 → 移除 AppService → 小写（Router.ParseAppServiceName 会 ToLower） */
+    var base = iface.indexOf('I') === 0 ? iface.substring(1) : iface;
+    var svc = base.replace(/AppService$/i,'').toLowerCase();
+    steps.push('服务名：<b>' + iface + '</b> → 去 I → <b>' + base + '</b> → 移除 AppService → <b>' + svc + '</b>');
+
+    /* 2. 路由前缀：模板中的 {appservice} 替换为小写服务名 */
+    var prefix = tpl.replace(/\{appservice(=([^}]*))?\}/i, function(m, g1, g2){
+      return (g2 !== undefined && g2 !== '') ? g2 : svc;
+    });
+    steps.push('模板 <b>' + tpl + '</b> → <b>' + prefix + '</b>');
+
+    /* 3. HTTP 方法 */
+    var m, why, explicit = false, tmpl = null;
+    if(attr === 'get'){ m='GET'; tmpl=null; explicit=true; }
+    else if(attr === 'get-t'){ m='GET'; tmpl='{id:long}'; explicit=true; }
+    else if(attr === 'post'){ m='POST'; tmpl=null; explicit=true; }
+    else if(attr === 'put'){ m='PUT'; tmpl=null; explicit=true; }
+    else if(attr === 'delete-t'){ m='DELETE'; tmpl='{id}'; explicit=true; }
+    else { m = (ptype === 'simple') ? 'GET' : 'POST'; }
+
+    if(explicit){
+      why = '由 [' + (attr==='get-t'?'HttpGet("{id:long}")':attr==='delete-t'?'HttpDelete("{id}")':'Http'+m.charAt(0)+m.slice(1).toLowerCase()) + '] 显式指定';
+      steps.push('HTTP 方法：显式标注 → <b>' + m + '</b>');
+    } else {
+      var guess = m;
+      steps.push('HTTP 方法：参数' + (ptype==='simple'?'全为简单类型':'含复杂对象') + ' → 初判 <b>' + guess + '</b>');
+      var hit = null;
+      for(var i=0;i<PRE.length;i++){
+        if(method.indexOf(PRE[i][0]) === 0){ hit = PRE[i]; break; }
+      }
+      if(hit){ m = hit[1]; }
+      why = hit ? ('参数推断 ' + guess + '，再按方法名前缀 ' + hit[0] + ' 修正为 ' + m)
+                : ('参数推断为 ' + guess + '，方法名无匹配前缀，保持 ' + guess);
+      steps.push(hit ? ('方法名前缀 <b>' + hit[0] + '</b> → 修正为 <b>' + m + '</b>')
+                     : '方法名无匹配前缀 → 保持 <b>' + m + '</b>');
+    }
+
+    /* 4. 路径片段 */
+    var seg, path;
+    if(explicit && tmpl !== null){
+      seg = null;
+      path = tmpl ? (prefix + '/' + tmpl) : prefix;
+      path = path.toLowerCase();
+      steps.push('特性带模板 <b>' + tmpl + '</b> → 直接拼接 → <b>' + path + '</b>');
+    } else {
+      seg = restful ? rmPostFix(method, 'Async') : method;
+      if(restful && seg !== method) steps.push('RESTful：去掉 Async 后缀 → <b>' + seg + '</b>');
+      var stripped = strip(seg, STRIP[m]);
+      if(restful && stripped !== seg){
+        steps.push('RESTful：剥离 ' + m + ' 语义前缀 → <b>' + (stripped || '(空)') + '</b>');
+        seg = stripped;
+      } else if(restful){
+        steps.push('RESTful：无 ' + m + ' 语义前缀可剥离 → <b>' + stripped + '</b>');
+        seg = stripped;
+      }
+      path = seg ? (prefix + '/' + seg) : prefix;
+      path = path.toLowerCase();
+      steps.push('最终路径 → <b>' + path + '</b>');
+    }
+
+    $('o-method').textContent = m;
+    $('o-method').className = 'm m-' + m;
+    $('o-why').textContent = why;
+    $('o-svc').textContent = svc;
+    $('o-path').textContent = path;
+    $('o-steps').innerHTML = steps.join('<span class="arrow">›</span>');
+  }
+
+  ['iface','method','ptype','attr','restful','tpl'].forEach(function(id){
+    var el = $(id);
+    el.addEventListener('input', derive);
+    el.addEventListener('change', derive);
+  });
+  derive();
+})();
+</script>
+</body>
+</html>
